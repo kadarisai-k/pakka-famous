@@ -1,0 +1,15 @@
+{
+  "name": "pakka-famous",
+  "version": "1.0.0",
+  "description": "Pakka Famous - Andhra Pradesh Sweets Ecommerce",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm start",
+    "admin": "cd admin && npm start",
+    "install-all": "cd backend && npm install && cd ../frontend && npm install && cd ../admin && npm install",
+    "seed": "cd backend && node seedData.js",
+    "build-all": "cd frontend && npm run build && cd ../admin && npm run build"
+  },
+  "author": "Pakka Famous Team",
+  "license": "MIT"
+}
