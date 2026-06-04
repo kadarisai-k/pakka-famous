@@ -72,29 +72,32 @@ const allowedOrigins = [
   'https://pakka-famous.vercel.app'
 ];
 
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(
-    ...process.env.FRONTEND_URL
-      .split(',')
-      .map(url => url.trim())
-      .filter(Boolean)
-  );
-}
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
+  origin: function(origin, callback) {
 
-    if (allowedOrigins.includes(origin)) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    // Allow all Vercel preview deployments
+    if (
+      origin.includes('.vercel.app') ||
+      allowedOrigins.includes(origin)
+    ) {
       return callback(null, true);
     }
 
     console.log('Blocked Origin:', origin);
     return callback(new Error(`CORS: origin ${origin} not allowed`));
   },
+
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-CSRF-Token'
+  ]
 }));
 
 app.options('*', cors());
