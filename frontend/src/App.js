@@ -45,7 +45,7 @@ import AdminStories from './pages/admin/AdminStories';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import AdminSettings from './pages/admin/AdminSettings';
-import AdminOrderDetails from './pages/admin/AdminOrderDetails';
+import AdminOrderDetail from './pages/admin/AdminOrderDetail';
 import AdminCitySweets from './pages/admin/AdminCitySweets';
 import AdminSpecialOffers from './pages/admin/AdminSpecialOffers';
 import AdminTopSellers from './pages/admin/AdminTopSellers';
@@ -133,7 +133,7 @@ function AppRoutes() {
 
 <Route path="/admin/products" element={<PrivateRoute><AdminProducts /></PrivateRoute>} />
 <Route path="/admin/orders" element={<PrivateRoute><AdminOrders /></PrivateRoute>} />
-<Route path="/admin/orders/:id" element={<PrivateRoute><AdminOrderDetails /></PrivateRoute>} />
+<Route path="/admin/orders/:id" element={<PrivateRoute><AdminOrderDetail /></PrivateRoute>} />
 <Route path="/admin/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
 <Route path="/admin/content" element={<PrivateRoute><AdminContent /></PrivateRoute>} />
 <Route path="/admin/stories" element={<PrivateRoute><AdminStories /></PrivateRoute>} />
