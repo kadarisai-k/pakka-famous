@@ -36,6 +36,27 @@ import FAQsPage from './pages/user/FAQsPage';
 import FeedbackPage from './pages/user/FeedbackPage';
 import NotFoundPage from './pages/user/NotFoundPage';
 
+
+import AdminProducts from './pages/admin/AdminProducts';
+import AdminOrders from './pages/admin/AdminOrders';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminContent from './pages/admin/AdminContent';
+import AdminStories from './pages/admin/AdminStories';
+import AdminTestimonials from './pages/admin/AdminTestimonials';
+import AdminCoupons from './pages/admin/AdminCoupons';
+import AdminSettings from './pages/admin/AdminSettings';
+import AdminOrderDetails from './pages/admin/AdminOrderDetails';
+import AdminCitySweets from './pages/admin/AdminCitySweets';
+import AdminSpecialOffers from './pages/admin/AdminSpecialOffers';
+import AdminTopSellers from './pages/admin/AdminTopSellers';
+import AdminFeaturedPicks from './pages/admin/AdminFeaturedPicks';
+import AdminSeasonalSpecials from './pages/admin/AdminSeasonalSpecials';
+import AdminTodaySpecial from './pages/admin/AdminTodaySpecial';
+import AdminBestSelling from './pages/admin/AdminBestSelling';
+import AdminOccasionOrders from './pages/admin/AdminOccasionOrders';
+import AdminPackings from './pages/admin/AdminPackings';
+
+
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 
@@ -108,7 +129,27 @@ function AppRoutes() {
       <AdminDashboard />
     </PrivateRoute>
   }
-/>      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+/>
+
+<Route path="/admin/products" element={<PrivateRoute><AdminProducts /></PrivateRoute>} />
+<Route path="/admin/orders" element={<PrivateRoute><AdminOrders /></PrivateRoute>} />
+<Route path="/admin/orders/:id" element={<PrivateRoute><AdminOrderDetails /></PrivateRoute>} />
+<Route path="/admin/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
+<Route path="/admin/content" element={<PrivateRoute><AdminContent /></PrivateRoute>} />
+<Route path="/admin/stories" element={<PrivateRoute><AdminStories /></PrivateRoute>} />
+<Route path="/admin/testimonials" element={<PrivateRoute><AdminTestimonials /></PrivateRoute>} />
+<Route path="/admin/coupons" element={<PrivateRoute><AdminCoupons /></PrivateRoute>} />
+<Route path="/admin/settings" element={<PrivateRoute><AdminSettings /></PrivateRoute>} />
+<Route path="/admin/city-sweets" element={<PrivateRoute><AdminCitySweets /></PrivateRoute>} />
+<Route path="/admin/special-offers" element={<PrivateRoute><AdminSpecialOffers /></PrivateRoute>} />
+<Route path="/admin/top-sellers" element={<PrivateRoute><AdminTopSellers /></PrivateRoute>} />
+<Route path="/admin/featured-picks" element={<PrivateRoute><AdminFeaturedPicks /></PrivateRoute>} />
+<Route path="/admin/seasonal-specials" element={<PrivateRoute><AdminSeasonalSpecials /></PrivateRoute>} />
+<Route path="/admin/today-special" element={<PrivateRoute><AdminTodaySpecial /></PrivateRoute>} />
+<Route path="/admin/best-selling" element={<PrivateRoute><AdminBestSelling /></PrivateRoute>} />
+<Route path="/admin/occasion-orders" element={<PrivateRoute><AdminOccasionOrders /></PrivateRoute>} />
+<Route path="/admin/packings" element={<PrivateRoute><AdminPackings /></PrivateRoute>} />
+   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/cart" element={<PrivateRoute><UserLayout logo={logo} announcement={announcement}><CartPage /></UserLayout></PrivateRoute>} />
