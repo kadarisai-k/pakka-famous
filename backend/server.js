@@ -65,20 +65,39 @@ app.use(morgan(isProd ? 'combined' : 'dev', {
 }));
 
 // ── CORS ──────────────────────────────────────────────────────────
-const allowedOrigins = isProd
-  ? (process.env.FRONTEND_URL || '').split(',').map(s => s.trim()).filter(Boolean)
-  : ['http://localhost:3000', 'http://localhost:3001'];
+// ── CORS ──────────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://pakka-famous.vercel.app'
+];
+
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(
+    ...process.env.FRONTEND_URL
+      .split(',')
+      .map(url => url.trim())
+      .filter(Boolean)
+  );
+}
 
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-    cb(new Error(`CORS: origin ${origin} not allowed`));
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    console.log('Blocked Origin:', origin);
+    return callback(new Error(`CORS: origin ${origin} not allowed`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token']
 }));
 
+app.options('*', cors());
 // ── Body parsers ──────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -92,22 +111,32 @@ app.use(hpp());             // prevent HTTP parameter pollution
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: isProd ? 300 : 1000,
-  standardHeaders: true, legacyHeaders: false,
-  message: { success: false, message: 'Too many requests. Please wait.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many requests. Please wait.'
+  },
   skip: req => req.method === 'OPTIONS',
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: isProd ? 15 : 100,
-  standardHeaders: true, legacyHeaders: false,
-  message: { success: false, message: 'Too many login attempts. Please wait 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many login attempts. Please wait 15 minutes.'
+  },
 });
-
 // ── CSRF protection ───────────────────────────────────────────────
-// Applied globally — login/register/refresh are skipped inside the middleware
-// Payment routes use Bearer token auth so CSRF is a secondary layer there
-app.use(csrfProtect);
+// TEMPORARILY DISABLED FOR VERCEL + RENDER DEPLOYMENT
+// Enable later after frontend sends CSRF token correctly
+
+if (process.env.ENABLE_CSRF === 'true') {
+  app.use(csrfProtect);
+}
 
 // ── Database ──────────────────────────────────────────────────────
 mongoose.connect(process.env.MONGO_URI, {
@@ -117,10 +146,14 @@ mongoose.connect(process.env.MONGO_URI, {
 })
   .then(async () => {
     logger.info('MongoDB connected');
-    await scheduleJob(); // Start daily summary cron job
+    await scheduleJob();
   })
-  .catch(err => { logger.error('MongoDB connection failed', { error: err.message }); process.exit(1); });
-
+  .catch(err => {
+    logger.error('MongoDB connection failed', {
+      error: err.message
+    });
+    process.exit(1);
+  });
 // ── Routes ────────────────────────────────────────────────────────
 app.use('/api/auth',              authLimiter);
 app.use('/api',                   apiLimiter);
@@ -215,3 +248,4 @@ app.listen(PORT, () =>
 );
 
 module.exports = app;
+
