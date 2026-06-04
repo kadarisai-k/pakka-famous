@@ -7,6 +7,8 @@ import { WishlistProvider } from './context/WishlistContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
+import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import HomePage from './pages/user/HomePage';
 import ProductsPage from './pages/user/ProductsPage';
 import ProductDetailPage from './pages/user/ProductDetailPage';
@@ -97,7 +99,16 @@ function AppRoutes() {
       <Route path="/faqs" element={<UserLayout logo={logo} announcement={announcement}><FAQsPage /></UserLayout>} />
       <Route path="/feedback" element={<UserLayout logo={logo} announcement={announcement}><FeedbackPage /></UserLayout>} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+<Route path="/admin/login" element={<AdminLoginPage />} />
+
+<Route
+  path="/admin"
+  element={
+    <PrivateRoute>
+      <AdminDashboard />
+    </PrivateRoute>
+  }
+/>      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/cart" element={<PrivateRoute><UserLayout logo={logo} announcement={announcement}><CartPage /></UserLayout></PrivateRoute>} />
@@ -110,7 +121,6 @@ function AppRoutes() {
 
       {/* Admin routes are no longer served from the user app.
           Access the admin panel at http://localhost:3001 (dev) or https://admin.yourdomain.com (prod) */}
-      <Route path="/admin/*" element={<Navigate to="/" />} />
 
       <Route path="*" element={<UserLayout logo={logo} announcement={announcement}><NotFoundPage /></UserLayout>} />
     </Routes>
